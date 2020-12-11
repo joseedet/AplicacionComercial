@@ -1,5 +1,6 @@
 ﻿using AplicacionComercial.Common.Interfaces;
 
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -19,5 +20,7 @@ namespace AplicacionComercial.Common.Entities
         [Required]
         [DefaultValue(true)]
         public bool Activo { get; set; }
+
+        public virtual ICollection<Producto> Producto { get; set; }
     }
 }

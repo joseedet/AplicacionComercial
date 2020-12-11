@@ -25,4 +25,9 @@
     <ProjectReference Include="..\AplicacionComercial.Common\AplicacionComercial.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\image\Departamento\" />
+    <Folder Include="wwwroot\image\Producto\" />
+  </ItemGroup>
+
 </Project>

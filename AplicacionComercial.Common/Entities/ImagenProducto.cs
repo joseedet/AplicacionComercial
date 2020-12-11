@@ -9,6 +9,8 @@ namespace AplicacionComercial.Common.Entities
     {
         public int Id { get; set; }
 
+        public int IdProducto { get; set; }
+
         [Display(Name = "Image")]
         public Guid ImageId { get; set; }
 
@@ -17,5 +19,7 @@ namespace AplicacionComercial.Common.Entities
         public string ImageFullPath => ImageId == Guid.Empty
             ? $"https://localhost:44305/images/noimage.png"
             : $"https://onsale.blob.core.windows.net/products/{ImageId}";
+
+        public virtual Producto IdproductoNavigation { get; set; }
     }
 }

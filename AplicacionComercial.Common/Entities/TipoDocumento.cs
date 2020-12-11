@@ -19,5 +19,6 @@ namespace AplicacionComercial.Common.Entities
         public bool Activo { get; set; }
 
         public virtual ICollection<Cliente> Clientes { get; set; }
+        public virtual ICollection<Proveedor> Proveedores { get; set; }
     }
 }
