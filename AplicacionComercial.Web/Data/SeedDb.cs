@@ -20,13 +20,14 @@ namespace AplicacionComercial.Web.Data
         {
 
             await _dataContext.Database.EnsureCreatedAsync();
-            await CheckClienteAsync();
+           
             await CheckTipoDocumentoAsync();
             await CheckConceptoAsync();
             await CheckDepartamentoAsync();
             await CheckBodegaAsync();
             await CheckMedida();
             await CheckIva();
+            await CheckClienteAsync();
             await CheckProveedor();
             //await CheckProducto();
 
@@ -227,19 +228,15 @@ namespace AplicacionComercial.Web.Data
                     Documento="4599988L",
                     Foto="",
                     IdtipoDocumento=1,
-                    Movil="691225598",
+                    Movil="691005533",
                     NombreComercial="Horticultura Pérez",
                     NombresContacto="Juan",
                     Notas="Esto es una prueba",
                     Poblacion="Barcelona",
                     Provincia="Barcelona",
-                    Telefono="93185115533"                 
+                    Telefono="931811220"                 
 
                 });
-            }
-
-            if (!_dataContext.Clientes.Any())
-            {
                 _dataContext.Clientes.Add(new Cliente
                 {
                     Activo = true,
@@ -248,7 +245,7 @@ namespace AplicacionComercial.Web.Data
                     CodPostal = "08025",
                     Correo = "perezlopez@gmail.com",
                     Direccion = "C/ Libertad 25 1º 1ª",
-                    Documento = "4599966L",
+                    Documento = "4599966T",
                     Foto = "",
                     IdtipoDocumento = 1,
                     Movil = "691225500",
@@ -257,10 +254,10 @@ namespace AplicacionComercial.Web.Data
                     Notas = "Esto es una prueba",
                     Poblacion = "Barcelona",
                     Provincia = "Barcelona",
-                    Telefono = "93185115522"
+                    Telefono = "931851155"
 
                 });
-            }
+            }           
             await _dataContext.SaveChangesAsync();
         }
         private async Task CheckProveedor()
@@ -282,11 +279,8 @@ namespace AplicacionComercial.Web.Data
                     Notas = "Esto es una prueba",
                     Poblacion = "Barcelona",
                     Provincia = "Barcelona",
-                    Telefono = "93185115522"
+                    Telefono = "931851157"
                 });
-            }
-            if (!_dataContext.Proveedores.Any())
-            {
                 _dataContext.Proveedores.Add(new Proveedor
                 {
                     Activo = true,
@@ -302,10 +296,11 @@ namespace AplicacionComercial.Web.Data
                     Notas = "Esto es una prueba",
                     Poblacion = "Barcelona",
                     Provincia = "Barcelona",
-                    Telefono = "93180115522"
+                    Telefono = "931801135"
 
                 });
             }
+            
             await _dataContext.SaveChangesAsync();
         }
     }

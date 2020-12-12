@@ -50,6 +50,24 @@ button.accept-policy {
   font-size: 1rem;
   line-height: inherit;
 }
+/*Menú desplegable con submenús*/
+.dropdown-submenu {
+    position: relative;
+}
+
+    .dropdown-submenu a::after {
+        transform: rotate(-90deg);
+        position: absolute;
+        right: 6px;
+        top: .8em;
+    }
+
+    .dropdown-submenu .dropdown-menu {
+        top: 0;
+        left: 100%;
+        margin-left: .1rem;
+        margin-right: .1rem;
+    }
 
 /* Sticky footer styles
 -------------------------------------------------- */
@@ -62,6 +80,7 @@ body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
 }
+
 .footer {
   position: absolute;
   bottom: 0;

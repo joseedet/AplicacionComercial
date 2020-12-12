@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
-
 </head>
 <body>
     <header>
@@ -23,29 +22,33 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="TipoDocumentos" asp-action="Index">Tipos Documento</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Bodegas" asp-action="Index">Almacén</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Departamentos" asp-action="Index">Departamento</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Conceptos" asp-action="Index">Concepto</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Medidas" asp-action="Index">Medida</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Ivas" asp-action="Index">Iva</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Archivo
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Bodegas" asp-action="Index">Almacén</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Clientes" asp-action="Index">Cliente</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Conceptos" asp-action="Index">Concepto</a></li>
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" href="#">Producto</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Departamentos" asp-action="Index">Departamento</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Ivas" asp-action="Index">IVA</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Productos" asp-action="Index">Producto</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Medidas" asp-action="Index">Medida</a></li>
+                                    </ul>
+                                    
+                                </li>
+                                
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Proveedores" asp-action="Index">Proveedor</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="TipoDocumentos" asp-action="Index">Concepto</a></li>
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                    </ul>
-                </div>
+                    </ul>               </div>
             </div>
         </nav>
     </header>
@@ -63,6 +66,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="/js/dropdown.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
