@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 using AplicacionComercial.Common.Interfaces;
@@ -16,5 +17,7 @@ namespace AplicacionComercial.Common.Entities
         [Required]
         [DefaultValue(true)]
         public bool Activo {get;set;}
+
+        //public ICollection<BodegaProducto> Almacenes { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace AplicacionComercial.Common.Entities
         [Display(Name = "Image")]
         public string ImageFullPath => ImageId == Guid.Empty
             ? $"https://localhost:44305/images/noimage.png"
-            : $"https://onsale.blob.core.windows.net/products/{ImageId}";
+            : $"https://localhost:44305/images/producto/{ImageId}";
 
         public virtual Producto IdproductoNavigation { get; set; }
     }

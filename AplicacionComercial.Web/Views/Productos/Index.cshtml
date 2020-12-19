@@ -1,12 +1,12 @@
-﻿@model IEnumerable<AplicacionComercial.Common.Entities.Concepto>
+﻿@model IEnumerable<AplicacionComercial.Common.Entities.Producto>
 
 @{
     ViewData["Title"] = "Index";
 }
+
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 <h1>Index</h1>
 <br />
-
 <p>
     <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus"></i>Nuevo</a>
 </p>
@@ -14,7 +14,7 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Concepto</h3>
+                <h3 class="panel-title">Almacenes</h3>
             </div>
             <div class="panel-body">
                 <table class="table table table-hover" id="MyTable">
@@ -24,8 +24,21 @@
                                 @Html.DisplayNameFor(model => model.Descripcion)
                             </th>
                             <th>
+                                @Html.DisplayNameFor(model => model.Nombre)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Precio)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Notas)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Medida)
+                            </th>
+                            <th>
                                 @Html.DisplayNameFor(model => model.Activo)
                             </th>
+                           
                             <th></th>
                         </tr>
                     </thead>
@@ -37,12 +50,25 @@
                                     @Html.DisplayFor(modelItem => item.Descripcion)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Activo)
+                                    @Html.DisplayFor(modelItem => item.Nombre)
                                 </td>
                                 <td>
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa fa-pencil-alt"></i></a>
-                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fa fa-info"></i></a>
-                                    
+                                    @Html.DisplayFor(modelItem => item.Precio)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Notas)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Medida)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Activo)
+                                </td>
+                                
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa fa-pencil-alt"></i></a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fa fa-info"></i></a> |
+                                    <!-- <a asp-action="Delete" asp-route-id="/*@item.Id*/"></a>-->
                                     <button data-id="@item.Id" class="btn btn-danger deleteItem"
                                             data-toggle="modal" data-target="#deleteDialog">
                                         <i class="fa fa-trash"></i>
@@ -67,7 +93,7 @@
             $('#MyTable').DataTable();
 
             // Delete item25
-            sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Conceptos/Delete/',
+            sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Bodega/Delete/',
                 false);
         });
     </script>

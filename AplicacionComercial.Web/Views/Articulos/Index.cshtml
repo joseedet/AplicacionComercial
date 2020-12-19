@@ -1,0 +1,40 @@
+﻿@model IndexViewModel
+
+
+@{
+
+    ViewBag.Title = "Blog Website";
+    ViewBag.Description = "Este blog trata sobre programacion viajes y marihuana";
+    ViewBag.keywords = "blog programming marihuana";
+}
+@*
+    <h2>Home Page!</h2>
+    <img src="~/content/static/IMG_20180127_174540.jpg" width="500" />
+
+*@
+<div class="main-image">
+
+    <span class="title">Amazing Blog Site</span>
+</div>
+<div class="container">
+    
+   
+
+    @foreach (var post in Model.Posts)
+    {
+
+        var image_path = $"/Image/{post.Image}";
+
+        <a class="post" asp-controller="Articulos" asp-action="Post" asp-route-id="@post.Id">
+
+            <img src="@image_path" />
+            <spam class="title">
+                @post.Title
+            </spam>
+        </a>
+    }
+
+    <partial name="_BlogPagination" model="Model" />
+
+
+</div>

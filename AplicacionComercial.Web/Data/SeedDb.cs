@@ -29,6 +29,7 @@ namespace AplicacionComercial.Web.Data
             await CheckIva();
             await CheckClienteAsync();
             await CheckProveedor();
+            await CheckPost();
             //await CheckProducto();
 
         }
@@ -302,6 +303,23 @@ namespace AplicacionComercial.Web.Data
             }
             
             await _dataContext.SaveChangesAsync();
+        }
+        private async Task CheckPost()
+        {
+            _dataContext.Add(new Post
+            {
+                 Body="Este es mi primer post, Hola Mundo",
+                 Category="Prueba",
+                 Craated=DateTime.Now,
+                 Description="Este es el post Hola Mundo",
+                 Title="Hola Mundo",
+                 Tags="Hola Mundo",
+                 
+                  
+
+            });
+            await _dataContext.SaveChangesAsync();
+
         }
     }
 }

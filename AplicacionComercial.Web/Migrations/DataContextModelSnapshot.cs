@@ -17,7 +17,7 @@ namespace AplicacionComercial.Web.Migrations
             modelBuilder
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.0");
+                .HasAnnotation("ProductVersion", "5.0.1");
 
             modelBuilder.Entity("AplicacionComercial.Common.Entities.Bodega", b =>
                 {
@@ -222,11 +222,33 @@ namespace AplicacionComercial.Web.Migrations
                     b.ToTable("IVA");
                 });
 
+            modelBuilder.Entity("AplicacionComercial.Common.Entities.MainComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PostId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("MainComments");
+                });
+
             modelBuilder.Entity("AplicacionComercial.Common.Entities.Medida", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(2)
                         .HasColumnType("int")
                         .HasColumnName("Id")
                         .UseIdentityColumn();
@@ -246,6 +268,39 @@ namespace AplicacionComercial.Web.Migrations
                     b.ToTable("Medidas");
                 });
 
+            modelBuilder.Entity("AplicacionComercial.Common.Entities.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Craated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tags")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Posts");
+                });
+
             modelBuilder.Entity("AplicacionComercial.Common.Entities.Producto", b =>
                 {
                     b.Property<int>("Id")
@@ -258,6 +313,14 @@ namespace AplicacionComercial.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((1))");
+
+                    b.Property<double>("Cantidad")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<int?>("DepartamentoId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -272,14 +335,14 @@ namespace AplicacionComercial.Web.Migrations
                         .HasColumnName("IdIva");
 
                     b.Property<int>("Idmedida")
-                        .HasMaxLength(2)
                         .HasColumnType("int")
                         .HasColumnName("IdMedida");
 
-                    b.Property<double>("Medida")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("float")
-                        .HasDefaultValueSql("((1))");
+                    b.Property<int?>("IvaId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MedidaId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -294,11 +357,11 @@ namespace AplicacionComercial.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Iddepartamento");
+                    b.HasIndex("DepartamentoId");
 
-                    b.HasIndex("Idiva");
+                    b.HasIndex("IvaId");
 
-                    b.HasIndex("Idmedida");
+                    b.HasIndex("MedidaId");
 
                     b.ToTable("Productos");
                 });
@@ -376,6 +439,29 @@ namespace AplicacionComercial.Web.Migrations
                     b.ToTable("Proveedores");
                 });
 
+            modelBuilder.Entity("AplicacionComercial.Common.Entities.SubComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MainCommentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MainCommentId");
+
+                    b.ToTable("SubComments");
+                });
+
             modelBuilder.Entity("AplicacionComercial.Common.Entities.TipoDocumento", b =>
                 {
                     b.Property<int>("Id")
@@ -421,31 +507,32 @@ namespace AplicacionComercial.Web.Migrations
                     b.Navigation("IdproductoNavigation");
                 });
 
+            modelBuilder.Entity("AplicacionComercial.Common.Entities.MainComment", b =>
+                {
+                    b.HasOne("AplicacionComercial.Common.Entities.Post", null)
+                        .WithMany("MainComments")
+                        .HasForeignKey("PostId");
+                });
+
             modelBuilder.Entity("AplicacionComercial.Common.Entities.Producto", b =>
                 {
-                    b.HasOne("AplicacionComercial.Common.Entities.Departamento", "IddepartamentoNavigation")
+                    b.HasOne("AplicacionComercial.Common.Entities.Departamento", "Departamento")
                         .WithMany("Producto")
-                        .HasForeignKey("Iddepartamento")
-                        .HasConstraintName("FK_Producto_Departamento")
-                        .IsRequired();
+                        .HasForeignKey("DepartamentoId");
 
-                    b.HasOne("AplicacionComercial.Common.Entities.Iva", "IdivaNavigation")
+                    b.HasOne("AplicacionComercial.Common.Entities.Iva", "Iva")
                         .WithMany("Producto")
-                        .HasForeignKey("Idiva")
-                        .HasConstraintName("FK_Producto_IVA")
-                        .IsRequired();
+                        .HasForeignKey("IvaId");
 
-                    b.HasOne("AplicacionComercial.Common.Entities.Medida", "IdmedidaNavigation")
+                    b.HasOne("AplicacionComercial.Common.Entities.Medida", "Medida")
                         .WithMany("Producto")
-                        .HasForeignKey("Idmedida")
-                        .HasConstraintName("FK_Producto_Medida")
-                        .IsRequired();
+                        .HasForeignKey("MedidaId");
 
-                    b.Navigation("IddepartamentoNavigation");
+                    b.Navigation("Departamento");
 
-                    b.Navigation("IdivaNavigation");
+                    b.Navigation("Iva");
 
-                    b.Navigation("IdmedidaNavigation");
+                    b.Navigation("Medida");
                 });
 
             modelBuilder.Entity("AplicacionComercial.Common.Entities.Proveedor", b =>
@@ -459,6 +546,15 @@ namespace AplicacionComercial.Web.Migrations
                     b.Navigation("IdtipoDocumentoNavigation");
                 });
 
+            modelBuilder.Entity("AplicacionComercial.Common.Entities.SubComment", b =>
+                {
+                    b.HasOne("AplicacionComercial.Common.Entities.MainComment", null)
+                        .WithMany("SubComments")
+                        .HasForeignKey("MainCommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("AplicacionComercial.Common.Entities.Departamento", b =>
                 {
                     b.Navigation("Producto");
@@ -469,9 +565,19 @@ namespace AplicacionComercial.Web.Migrations
                     b.Navigation("Producto");
                 });
 
+            modelBuilder.Entity("AplicacionComercial.Common.Entities.MainComment", b =>
+                {
+                    b.Navigation("SubComments");
+                });
+
             modelBuilder.Entity("AplicacionComercial.Common.Entities.Medida", b =>
                 {
                     b.Navigation("Producto");
+                });
+
+            modelBuilder.Entity("AplicacionComercial.Common.Entities.Post", b =>
+                {
+                    b.Navigation("MainComments");
                 });
 
             modelBuilder.Entity("AplicacionComercial.Common.Entities.Producto", b =>

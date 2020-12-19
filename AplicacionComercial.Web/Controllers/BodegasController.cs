@@ -1,10 +1,11 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using AplicacionComercial.Common.Entities;
+﻿using AplicacionComercial.Common.Entities;
 using AplicacionComercial.Web.Data;
 using AplicacionComercial.Web.Interfaces;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+using System.Threading.Tasks;
 
 namespace AplicacionComercial.Web.Controllers
 {
@@ -33,8 +34,8 @@ namespace AplicacionComercial.Web.Controllers
             }
 
             var bodega = await _bodega.GetByIdAsync((int)id);
-                //await _context.Bodegas
-                //.FirstOrDefaultAsync(m => m.Id == id);
+            //await _context.Bodegas
+            //.FirstOrDefaultAsync(m => m.Id == id);
             if (bodega == null)
             {
                 return NotFound();
@@ -74,7 +75,7 @@ namespace AplicacionComercial.Web.Controllers
             }
 
             var bodega = await _bodega.GetByIdAsync((int)id);
-                //_context.Bodegas.FindAsync(id);
+            //_context.Bodegas.FindAsync(id);
             if (bodega == null)
             {
                 return NotFound();
@@ -98,7 +99,7 @@ namespace AplicacionComercial.Web.Controllers
             {
                 try
                 {
-                    
+
                     await _bodega.UpdateAsync(bodega);
                     //_context.SaveChangesAsync();
                 }
@@ -127,8 +128,8 @@ namespace AplicacionComercial.Web.Controllers
             }
 
             var bodega = await _bodega.GetByIdAsync((int)id);
-                //_context.Bodegas
-                //.FirstOrDefaultAsync(m => m.Id == id);
+            //_context.Bodegas
+            //.FirstOrDefaultAsync(m => m.Id == id);
             if (bodega == null)
             {
                 return NotFound();
@@ -150,6 +151,6 @@ namespace AplicacionComercial.Web.Controllers
         //    return RedirectToAction(nameof(Index));
         //}
 
-       
+
     }
 }

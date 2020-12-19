@@ -4,6 +4,7 @@ using AplicacionComercial.Web.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -50,6 +51,19 @@ namespace AplicacionComercial.Web.Repository
         {
             _dataContext.Update(entity);
             await _dataContext.SaveChangesAsync();
+        }
+        public IQueryable<T> GetAll(int pageNumber)
+        {
+            int pagesize = 1;
+
+
+            return _dataContext.Set<T>().Skip(1).Take(pagesize);
+        }
+
+        public async Task<IAsyncEnumerable<T>> GetAllList()
+        {
+            Task<List<T>> task = _dataContext.Set<T>().AsNoTracking().ToListAsync();
+            return (IAsyncEnumerable<T>)await task;
         }
     }
 }
