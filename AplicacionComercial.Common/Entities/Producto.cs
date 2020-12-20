@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace AplicacionComercial.Common.Entities
@@ -16,7 +15,7 @@ namespace AplicacionComercial.Common.Entities
         public string Descripcion { get; set; }
 
         [Required]
-        [MaxLength(50,ErrorMessage ="El {0} no puede contener más de 50 carácteres")]
+        [MaxLength(50, ErrorMessage = "El {0} no puede contener más de 50 carácteres")]
         public string Nombre { get; set; }
 
         [Required]
@@ -33,7 +32,7 @@ namespace AplicacionComercial.Common.Entities
 
 
         public string Notas { get; set; }
-       // public string Imagen { get; set; }
+        // public string Imagen { get; set; }
 
         [Required]
         [Display(Name = "Medida")]
@@ -48,22 +47,16 @@ namespace AplicacionComercial.Common.Entities
         public bool Activo { get; set; }
 
 
-        [DisplayName("Número imágenes producto")]
+        [DisplayName("Núm. Imágenes")]
         public int NumeroImagenesProducto => ImagenesProducto == null ? 0 : ImagenesProducto.Count;
 
-        //[Required]
-        //[Display(Name = "Departamento")]
-        //[NotMapped]
+
         public virtual Departamento Departamento { get; set; }
 
-        //[Required]
-        //[Display(Name = "IVA")]
-        //[NotMapped]
-        public virtual  Iva Iva { get; set; }
 
-        ////[Required]
-        ////[Display(Name = "Medida")]
-        //[NotMapped]
+        public virtual Iva Iva { get; set; }
+
+
         public virtual Medida Medida { get; set; }
 
         public ICollection<ImagenProducto> ImagenesProducto { get; set; }
@@ -72,7 +65,7 @@ namespace AplicacionComercial.Common.Entities
         //TODO:Pendiente de cambio de ruta.
         [Display(Name = "Image")]
         public string ImageFullPath => ImagenesProducto == null || ImagenesProducto.Count == 0
-        ? $"https://localhost:44334/images/noimage/noimage.png"
+        ? $"https://localhost:44334/image/noimage/noimage.png"
         : ImagenesProducto.FirstOrDefault().ImageFullPath;
     }
 }

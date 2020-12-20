@@ -10,5 +10,6 @@ namespace AplicacionComercial.Web.Interfaces
     public interface IProductoRepository:IGenericRepository<Producto>
     {
         Task<List<Producto>> GetIndexResult();
+        Task<Producto> GetProductoById(int id);
     }
 }

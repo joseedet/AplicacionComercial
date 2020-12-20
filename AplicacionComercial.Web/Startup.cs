@@ -2,6 +2,7 @@ using AplicacionComercial.Common.Entities;
 using AplicacionComercial.Web.Data;
 using AplicacionComercial.Web.FileManager;
 using AplicacionComercial.Web.Helper;
+using AplicacionComercial.Web.Helpers;
 using AplicacionComercial.Web.Interfaces;
 using AplicacionComercial.Web.Repository;
 
@@ -43,6 +44,7 @@ namespace AplicacionComercial.Web
             services.AddTransient<ICommentRepository, SubCommentRepository>();
             services.AddTransient<IProductoRepository,ProductoRepository>();
             services.AddTransient<ICombosHelper, CombosHelper>();
+            services.AddTransient<IConverterHelper, ConverterHelper>();
            services.AddControllersWithViews();
         }
 

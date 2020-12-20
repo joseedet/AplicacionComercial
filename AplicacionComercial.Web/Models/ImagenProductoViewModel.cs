@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace AplicacionComercial.Web.Models
 {
-    public class ProductoViewModel : Producto
+    public class ImagenProductoViewModel : ImagenProducto
     {
         public IFormFile Image { get; set; } = null;
     }

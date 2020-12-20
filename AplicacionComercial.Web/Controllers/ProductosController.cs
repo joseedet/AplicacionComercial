@@ -1,6 +1,7 @@
 ﻿using AplicacionComercial.Common.Entities;
 using AplicacionComercial.Web.Data;
 using AplicacionComercial.Web.Interfaces;
+using AplicacionComercial.Web.Models;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -20,16 +21,20 @@ namespace AplicacionComercial.Web.Controllers
         private readonly IMedidaRepository _medida;
         private readonly IIvaRepository _iva;
         private readonly IDepartamentoRepository _departamento;
+        private readonly IConverterHelper _convertHelper;
+
 
         public ProductosController(/*DataContext context*/ICombosHelper combosHelper,
             IProductoRepository productoRepository,IMedidaRepository medidaRepository,
-            IIvaRepository iva,IDepartamentoRepository departamentoRepository)
+            IIvaRepository iva,IDepartamentoRepository departamentoRepository,
+            IConverterHelper converterHelper)
         {
             _combosHelper = combosHelper;
             _producto = productoRepository;
             _medida = medidaRepository;
             _iva = iva;
             _departamento = departamentoRepository;
+            _convertHelper = converterHelper;
 
             //_context = context;
 
@@ -39,6 +44,8 @@ namespace AplicacionComercial.Web.Controllers
         public async Task<IActionResult> Index()
         {
             //var dataContext = _context.Productos.Include(p => p.IddepartamentoNavigation).Include(p => p.IdivaNavigation).Include(p => p.IdmedidaNavigation);
+
+            
             var data = await _producto.GetIndexResult();
             return View(data);
         }       
@@ -67,6 +74,11 @@ namespace AplicacionComercial.Web.Controllers
         // GET: Productos/Create
         public IActionResult Create()
         {
+            ProductoViewModel model = new ProductoViewModel
+            {
+                Activo = true
+            };
+
             ViewData["Iddepartamento"] = new SelectList(_departamento.GetAll(),"Id","Descripcion");
             ViewData["Idiva"] = new SelectList(_iva.GetAll(),"Id","Descripcion");//, "Id", "Descripcion");
             ViewData["Idmedida"] = new SelectList(_medida.GetAll(),"Id", "Descripcion") ;
@@ -78,21 +90,24 @@ namespace AplicacionComercial.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Producto producto)
+        public async Task<IActionResult> Create(ProductoViewModel model)
         {
+
             if (ModelState.IsValid)
             {
-                await _producto.CreateAsync(producto);                
+                Producto producto = await _convertHelper.ToProductAsync(model, true);
+                await _producto.CreateAsync(producto);
+               
                 return RedirectToAction("Index");
             }
             //ViewData["Iddepartamento"] = new SelectListItem("Id",_combosHelper.GetComboDepartamento.;
-            ViewData["Iddepartamento"] = new SelectList(_departamento.GetAll(),"Id","Descripcion",producto.Iddepartamento);
+            ViewData["Iddepartamento"] = new SelectList(_departamento.GetAll(),"Id","Descripcion",model.Iddepartamento);
             //ViewData["Iddepartamento"] = new SelectList(_context.Departamentos, "Id", "Descripcion", producto.Iddepartamento);
             //ViewData["Idiva"] = _combosHelper.GetComboIva();
-            ViewData["Idiva"] = new SelectList(_iva.GetAll(),"Id","Descripcion",producto.Idiva);
+            ViewData["Idiva"] = new SelectList(_iva.GetAll(),"Id","Descripcion",model.Idiva);
             //ViewData["Idmedida"] = _combosHelper.GetComboMedida();
-            ViewData["Idmedida"] = new SelectList(_medida.GetAll(),"Id","Descripcion",producto.Idmedida);//, "Descripcion", producto.Idmedida);
-            return View(producto);
+            ViewData["Idmedida"] = new SelectList(_medida.GetAll(),"Id","Descripcion",model.Idmedida);//, "Descripcion", producto.Idmedida);
+            return View(model);
         }
 
         // GET: Productos/Edit/5
@@ -103,14 +118,14 @@ namespace AplicacionComercial.Web.Controllers
                 return NotFound();
             }
 
-            var producto = await _context.Productos.FindAsync(id);
+            var producto = await _producto.GetByIdAsync((int)id);
             if (producto == null)
             {
                 return NotFound();
             }
-            ViewData["Iddepartamento"] = new SelectList(_context.Departamentos, "Id", "Descripcion", producto.Iddepartamento);
-            ViewData["Idiva"] = new SelectList(_context.Ivas, "Id", "Descripcion", producto.Idiva);
-            ViewData["Idmedida"] = new SelectList(_context.Medidas, "Id", "Descripcion", producto.Idmedida);
+            ViewData["Iddepartamento"] = new SelectList(_departamento.GetAll(), "Id", "Descripcion", producto.Iddepartamento);
+            ViewData["Idiva"] = new SelectList(_iva.GetAll(), "Id", "Descripcion", producto.Idiva);
+            ViewData["Idmedida"] = new SelectList(_medida.GetAll(), "Id", "Descripcion", producto.Idmedida);
             return View(producto);
         }
 
@@ -130,12 +145,12 @@ namespace AplicacionComercial.Web.Controllers
             {
                 try
                 {
-                    _context.Update(producto);
-                    await _context.SaveChangesAsync();
+                    
+                    await _producto.UpdateAsync(producto);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductoExists(producto.Id))
+                    if (!await _producto.ExistAsync(producto.Id))
                     {
                         return NotFound();
                     }
@@ -152,7 +167,6 @@ namespace AplicacionComercial.Web.Controllers
             return View(producto);
         }
 
-        // GET: Productos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -160,33 +174,16 @@ namespace AplicacionComercial.Web.Controllers
                 return NotFound();
             }
 
-            var producto = await _context.Productos
-                .Include(p => p.Iddepartamento)
-                .Include(p => p.Idiva)
-                .Include(p => p.Idmedida)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            Producto producto = await _producto.GetProductoById((int)id);
             if (producto == null)
             {
                 return NotFound();
             }
-
-            return View(producto);
+            await _producto.DeleteAsync(producto);
+            return RedirectToAction("Index");
+            //return View(departamento);
         }
 
-        // POST: Productos/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var producto = await _context.Productos.FindAsync(id);
-            _context.Productos.Remove(producto);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool ProductoExists(int id)
-        {
-            return _context.Productos.Any(e => e.Id == id);
-        }
     }
 }

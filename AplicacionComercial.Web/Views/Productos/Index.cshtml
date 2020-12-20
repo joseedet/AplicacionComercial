@@ -14,7 +14,7 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Almacenes</h3>
+                <h3 class="panel-title">Producto</h3>
             </div>
             <div class="panel-body">
                 <table class="table table table-hover" id="MyTable">
@@ -33,12 +33,16 @@
                                 @Html.DisplayNameFor(model => model.Notas)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Medida)
+                                @Html.DisplayNameFor(model => model.ImageFullPath)
                             </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.NumeroImagenesProducto)
+                            </th>
+
                             <th>
                                 @Html.DisplayNameFor(model => model.Activo)
                             </th>
-                           
+
                             <th></th>
                         </tr>
                     </thead>
@@ -59,15 +63,20 @@
                                     @Html.DisplayFor(modelItem => item.Notas)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Medida)
+                                    <img src="@item.ImageFullPath" style="width:20px;height:20px;max-width: 100%; height: auto;" />
                                 </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NumeroImagenesProducto)
+                                </td>
+                                <td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Activo)
                                 </td>
-                                
+
                                 <td>
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa fa-pencil-alt"></i></a> |
-                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fa fa-info"></i></a> |
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa fa-pencil-alt"></i></a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fa fa-info"></i></a>
+
                                     <!-- <a asp-action="Delete" asp-route-id="/*@item.Id*/"></a>-->
                                     <button data-id="@item.Id" class="btn btn-danger deleteItem"
                                             data-toggle="modal" data-target="#deleteDialog">
@@ -93,7 +102,7 @@
             $('#MyTable').DataTable();
 
             // Delete item25
-            sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Bodega/Delete/',
+            sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Productos/Delete/',
                 false);
         });
     </script>

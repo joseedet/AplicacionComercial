@@ -18,15 +18,17 @@ namespace AplicacionComercial.Web.Repository
             _dataContext = dataContext;
         }
 
-        //public async Task<Producto> GetIndexResult()
-        //{
-           
+        public async Task<Producto> GetProductoById(int id)
+        {
+            return await _dataContext.Productos
+                 .Include(p => p.Iddepartamento)
+                 .Include(p => p.Idiva)
+                 .Include(p => p.Idmedida)
+                 .FirstOrDefaultAsync(m => m.Id == id);
+        }
+       
 
-        //      List<Producto>  list= 
-        //    return (Producto) producto;
-        //}
-
-         async Task<List<Producto>> IProductoRepository.GetIndexResult()
+        async Task<List<Producto>> IProductoRepository.GetIndexResult()
         {
            return await _dataContext.Productos.Include(p => p.Departamento)
                 .Include(p => p.Iva)

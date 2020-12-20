@@ -52,7 +52,8 @@ namespace AplicacionComercial.Web.FileManager
 
                 var mime = image.FileName.Substring(image.FileName.LastIndexOf("."));
 
-                string fileName = $"img_{DateTime.Now.ToString("dd-MM-yyy-HH-mm-ss")}{mime}";
+                Guid guid = new Guid();
+                string fileName = $"img_{guid}{mime}";
 
                 using (var filestream = new FileStream(Path.Combine(save_path, fileName), FileMode.Create))
                 {
