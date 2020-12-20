@@ -18,6 +18,6 @@ namespace AplicacionComercial.Common.Entities
         [DefaultValue(true)]
         public bool Activo {get;set;}
 
-        //public ICollection<BodegaProducto> Almacenes { get; set; }
+        public ICollection<BodegaProducto> Almacenes { get; set; }
     }
 }

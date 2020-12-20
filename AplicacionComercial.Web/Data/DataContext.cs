@@ -12,7 +12,7 @@ namespace AplicacionComercial.Web.Data
 
         }
         public virtual DbSet<Bodega> Bodegas { get; set; }
-        //public virtual DbSet<BodegaProducto> BodegasProductos { get; set; }
+        public virtual DbSet<BodegaProducto> BodegaProductos { get; set; }
         public virtual DbSet<Cliente> Clientes { get; set; }
         public virtual DbSet<Concepto> Conceptos { get; set; }
         public virtual DbSet<Departamento> Departamentos { get; set; }
@@ -46,38 +46,36 @@ namespace AplicacionComercial.Web.Data
                 entity.Property(e => e.Descripcion).IsRequired();
             });
 
-            //modelBuilder.Entity<BodegaProducto>(entity =>
-            //{
-            //    entity.HasKey(e => new { e.Idbodega, e.Idproducto });
+            modelBuilder.Entity<BodegaProducto>(entity =>
+            {
+                entity.HasKey(e => new { e.Idbodega, e.Idproducto });
 
-            //    entity.Property(e => e.Idbodega).HasColumnName("IdBodega");
+                entity.Property(e => e.Idbodega).HasColumnName("IdBodega");
 
-            //    entity.Property(e => e.Idproducto).HasColumnName("IdProducto");
+                entity.Property(e => e.Idproducto).HasColumnName("IdProducto");
 
-            //    entity.Property(e => e.CantidadMinima).HasDefaultValueSql("((1))");
+                entity.Property(e => e.CantidadMinima).HasDefaultValueSql("((1))");
 
-            //    entity.Property(e => e.DiasReposicion).HasDefaultValueSql("((1))");
+                entity.Property(e => e.DiasReposicion).HasDefaultValueSql("((1))");
 
-            //    entity.HasOne(d => d.IdbodegaNavigation)
-            //        .WithMany(p => p.Almacenes)
-            //        .HasForeignKey(d => d.Idbodega)
-            //        .OnDelete(DeleteBehavior.ClientSetNull)
-            //        .HasConstraintName("FK_BodegaProducto_Bodega");
+                entity.HasOne(d => d.IdbodegaNavigation)
+                   .WithMany(p => p.Almacenes)
+                   .HasForeignKey(d => d.Idbodega)
+                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .HasConstraintName("FK_BodegaProducto_Bodega");
 
-            //    entity.HasOne(d => d.IdproductoNavigation)
-            //        .WithMany(p => p.BodegaProductos)
-            //        .HasForeignKey(d => d.Idproducto)
-            //        .OnDelete(DeleteBehavior.ClientSetNull)
-            //        .HasConstraintName("FK_BodegaProducto_Producto");
-            //});
+                entity.HasOne(d => d.IdproductoNavigation)
+                    .WithMany(p => p.BodegaProductos)
+                    .HasForeignKey(d => d.Idproducto)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_BodegaProducto_Producto");
+            });
 
             modelBuilder.Entity<Cliente>(entity =>
             {
                 entity.HasKey(e => new { e.Id, e.IdtipoDocumento });
 
-                //entity.HasIndex(e => new { e.IdtipoDocumento, e.Documento })
-                //    .HasName("IX_TipoDocumento_Documento")
-                //    .IsUnique();
+               
                 entity.HasIndex(e => new { e.IdtipoDocumento, e.Documento })
                         .HasDatabaseName("IX_TipoDocumento_Documento")
                         .IsUnique();
@@ -287,23 +285,23 @@ namespace AplicacionComercial.Web.Data
                 entity.Property(e => e.Precio).HasColumnType("money");
 
 
-                //entity.HasOne(d => d.IddepartamentoNavigation)
-                //    .WithMany(p => p.Producto)
-                //    .HasForeignKey(d => d.Iddepartamento)
-                //    .OnDelete(DeleteBehavior.ClientSetNull)
-                //    .HasConstraintName("FK_Producto_Departamento");
+                entity.HasOne(d => d.Departamento)
+                    .WithMany(p => p.Producto)
+                    .HasForeignKey(d => d.Iddepartamento)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Producto_Departamento");
 
-                //entity.HasOne(d => d.IdivaNavigation)
-                //    .WithMany(p => p.Producto)
-                //    .HasForeignKey(d => d.Idiva)
-                //    .OnDelete(DeleteBehavior.ClientSetNull)
-                //    .HasConstraintName("FK_Producto_IVA");
+                entity.HasOne(d => d.Iva)
+                    .WithMany(p => p.Producto)
+                    .HasForeignKey(d => d.Idiva)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Producto_IVA");
 
-                //entity.HasOne(d => d.IdmedidaNavigation)
-                //    .WithMany(p => p.Producto)
-                //    .HasForeignKey(d => d.Idmedida)
-                //    .OnDelete(DeleteBehavior.ClientSetNull)
-                //    .HasConstraintName("FK_Producto_Medida");
+                entity.HasOne(d => d.Medida)
+                    .WithMany(p => p.Producto)
+                    .HasForeignKey(d => d.Idmedida)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Producto_Medida");
             });
 
             modelBuilder.Entity<TipoDocumento>(entity =>

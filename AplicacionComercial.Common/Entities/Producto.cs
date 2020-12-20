@@ -60,7 +60,7 @@ namespace AplicacionComercial.Common.Entities
         public virtual Medida Medida { get; set; }
 
         public ICollection<ImagenProducto> ImagenesProducto { get; set; }
-        //public ICollection<BodegaProducto> BodegaProductos { get; set; }
+        public ICollection<BodegaProducto> BodegaProductos { get; set; }
 
         //TODO:Pendiente de cambio de ruta.
         [Display(Name = "Image")]

@@ -3,53 +3,115 @@
 @{
     ViewData["Title"] = "Details";
 }
-
-<h1>Details</h1>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+<h1>Detalles</h1>
 
 <div>
-    <h4>Producto</h4>
+    <h4>Country</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Descripcion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Descripcion)
-        </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Nombre)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NumeroImagenesProducto)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Precio)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BodegaProductos.Count)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Precio)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Notas)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Notas)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medida)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medida)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Activo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Activo)
-        </dd>
         
     </dl>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="AddBodegaProducto" asp-route-id="@Model.Id" class="btn btn-primary"><i class="fa fa-plus"></i>Almacén-Producto</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"><i class="fa fa-pencil-alt"></i></a>
+    <a asp-action="Index" class="btn btn-success"><i class="fa fa-arrow-left"></i></a>
 </div>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Productos-Almacenes</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table-hover" id="MyTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model =>
+                                model.BodegaProductos.FirstOrDefault().Stock)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model =>
+                                model.BodegaProductos.FirstOrDefault().Maximo)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model =>
+                                model.BodegaProductos.FirstOrDefault().Minimo)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model =>
+                                model.BodegaProductos.FirstOrDefault().DiasReposicion)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model =>
+                                model.BodegaProductos.FirstOrDefault().CantidadMinima)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.BodegaProductos)
+                        {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Stock)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Maximo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Minimo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DiasReposicion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CantidadMinima)
+                            </td>
+                            <td>
+                                <a asp-action="EditBodegaProducto" asp-route-id="@item.Idproducto" class="btn btn-warning">
+                                    <i class="fa fa-pencil-alt"></i>
+                                </a>
+                                <a asp-action="DetailsBodegaProducto" asp-route-id="@item.Idproducto" class="btn btn-info">
+                                    <i class="fa fa-info"></i>
+                                </a>
+                                <button data-id="@item.Idproducto" class="btn btn-danger deleteItem"
+                                        data-toggle="modal" data-target="#deleteDialog">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<partial name="_DeleteDialog" />
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="/js/deleteDialog.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MyTable').DataTable();
+            // Delete item17
+            sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete',
+                '/Productos/DeleteProductos/', false);
+        });
+    </script>
+}

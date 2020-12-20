@@ -58,11 +58,7 @@ namespace AplicacionComercial.Web.Controllers
                 return NotFound();
             }
 
-            var producto = await _context.Productos
-                .Include(p => p.Iddepartamento)
-                .Include(p => p.Idiva)
-                .Include(p => p.Idmedida)
-                .FirstOrDefaultAsync(m => m.Id == id);
+             var producto = await _producto.GetProductoAlmacen((int)id);
             if (producto == null)
             {
                 return NotFound();

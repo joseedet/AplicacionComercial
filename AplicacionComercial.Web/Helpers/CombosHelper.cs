@@ -3,10 +3,8 @@ using AplicacionComercial.Web.Interfaces;
 
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace AplicacionComercial.Web.Helper
 {
@@ -33,7 +31,6 @@ namespace AplicacionComercial.Web.Helper
             });
             return list;
         }
-    
 
         public IEnumerable<SelectListItem> GetComboIva()
         {
@@ -69,21 +66,22 @@ namespace AplicacionComercial.Web.Helper
             return list;
         }
 
-        //public IEnumerable<SelectListItem> GetComboUnidades()
-        //{
-        //    List<SelectListItem> list = _dataContext..Select(t => new SelectListItem
-        //    {
-        //        Text = t.Descripcion,
-        //        Value = $"{t.Id}"
-        //    })
-        //                .OrderBy(t => t.Text)
-        //                .ToList();
-        //    list.Insert(0, new SelectListItem
-        //    {
-        //        Text = "Seleciona un departamento...]",
-        //        Value = "0"
-        //    });
-        //    return list;
-        //}
+        public IEnumerable<SelectListItem> GetAlmacen()
+        {
+            List<SelectListItem> list = _dataContext.Productos.Select(t => new SelectListItem
+            {
+                Text = t.Nombre,
+                Value = $"{t.Id}"
+            })
+                .OrderBy(t => t.Text)
+                .ToList();
+            list.Insert(0, new SelectListItem
+            {
+                Text = "Seleciona un producto ...]",
+                Value = "0"
+            });
+            return list;
+        }
+
     }
 }

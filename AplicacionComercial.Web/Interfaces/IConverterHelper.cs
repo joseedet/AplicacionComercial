@@ -9,5 +9,7 @@ namespace AplicacionComercial.Web.Interfaces
     {
         Task<Producto> ToProductAsync(ProductoViewModel model, bool isNew);
         ProductoViewModel ToProductViewModel(Producto _producto);
+        BodegaProducto ToAlmacenProducto(ProductoAlmacenViewModel model);
+        ProductoAlmacenViewModel ProductoAlmacenViewModel(BodegaProducto _bodegaProducto);
     }
 }

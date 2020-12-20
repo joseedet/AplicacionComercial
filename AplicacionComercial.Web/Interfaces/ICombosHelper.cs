@@ -11,7 +11,8 @@ namespace AplicacionComercial.Web.Interfaces
     {
         IEnumerable<SelectListItem> GetComboDepartamento();
         IEnumerable<SelectListItem> GetComboIva();
-        IEnumerable<SelectListItem> GetComboMedida();     
+        IEnumerable<SelectListItem> GetComboMedida();
+        IEnumerable<SelectListItem> GetAlmacen();
 
     }
 }

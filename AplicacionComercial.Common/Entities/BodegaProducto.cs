@@ -2,7 +2,7 @@
 
 namespace AplicacionComercial.Common.Entities
 {
-    public partial class BodegaProducto
+    public class BodegaProducto
     {
         public int Idbodega { get; set; }
         public int Idproducto { get; set; }

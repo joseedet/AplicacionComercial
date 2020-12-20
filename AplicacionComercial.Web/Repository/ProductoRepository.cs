@@ -18,6 +18,14 @@ namespace AplicacionComercial.Web.Repository
             _dataContext = dataContext;
         }
 
+        public async Task<Producto> GetProductoAlmacen(int id)
+        {
+            //throw new System.NotImplementedException();
+            return await _dataContext.Productos
+                .Include(p => p.BodegaProductos)                            
+                .FirstOrDefaultAsync(p => p.Id==id);
+        }
+
         public async Task<Producto> GetProductoById(int id)
         {
             return await _dataContext.Productos

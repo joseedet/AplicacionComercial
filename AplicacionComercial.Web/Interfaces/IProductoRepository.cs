@@ -11,5 +11,6 @@ namespace AplicacionComercial.Web.Interfaces
     {
         Task<List<Producto>> GetIndexResult();
         Task<Producto> GetProductoById(int id);
+        Task<Producto> GetProductoAlmacen(int id);
     }
 }

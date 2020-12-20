@@ -8,6 +8,36 @@ namespace AplicacionComercial.Web.Helpers
 {
     public class ConverterHelper : IConverterHelper
     {
+        public ProductoAlmacenViewModel ProductoAlmacenViewModel(BodegaProducto model)
+        {
+            return new ProductoAlmacenViewModel
+            {
+                //Idbodega = model.Idbodega,
+                //Idproducto=model.Idproducto,
+                //CantidadMinima=model.CantidadMinima,
+                //DiasReposicion=model.DiasReposicion,
+                //Maximo=model.Maximo,
+                //Minimo=model.Minimo,
+                //Stock=model.Stock
+            };
+        }
+
+        public BodegaProducto ToAlmacenProducto(ProductoAlmacenViewModel model)
+        {
+            return new BodegaProducto
+            {
+                //Idbodega = model.Idbodega,
+                //Idproducto=model.Idproducto,
+                //CantidadMinima=model.CantidadMinima,
+                //DiasReposicion=model.DiasReposicion,
+                //Maximo=model.Maximo,
+                //Minimo=model.Minimo,
+                //Stock=model.Stock
+
+
+            };
+        }
+
         public async Task<Producto> ToProductAsync(ProductoViewModel model, bool isNew)
         {
 
@@ -47,5 +77,7 @@ namespace AplicacionComercial.Web.Helpers
 
             };
         }
+
+        
     }
 }
