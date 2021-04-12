@@ -1,0 +1,71 @@
+﻿@model AplicacionComercial.Web.Models.ImagenProductoViewModel
+@{
+    ViewData["Title"] = "Detalles Imagen Producto";
+}
+
+<h1>Detalles Imagen Producto</h1>
+
+
+<p>
+    <a asp-action="AddImagenProducto" class="btn btn-primary"><i class="fa fa-plus"></i>Agregar Imagen</a>
+</p>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Imagenes Producto</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table-hover" id="MyTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model =>
+                                model.ImagenesProducto.FirstOrDefault().ImageFullPath)
+                            </th>                          
+                            
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ImagenesProducto)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ImageFullPath)
+                                </td>
+                                <td>
+                                    
+                                    <button data-id="@item.Id" class="btn btn-danger deleteItem"
+                                            data-toggle="modal" data-target="#deleteDialog">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<partial name="_DeleteDialog" />
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="/js/deleteDialog.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MyTable').DataTable();
+            // Delete item17
+            sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete',
+                '/Productos/DeleteProductos/', false);
+        });
+    </script>
+}
+
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,15 +1,19 @@
-﻿using AplicacionComercial.Common.Interfaces;
+﻿using AplicacionComercial.Common.Enum;
+using AplicacionComercial.Common.Interfaces;
+using AplicacionComercial.Web.Data.Entities;
+
+using Microsoft.AspNetCore.Identity;
 
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace AplicacionComercial.Common.Entities
+namespace AplicacionComercial.Web.Data.Entities
 {
     public class Proveedor : IEntity
     {
         public int Id { get; set; }
 
-        public int IdtipoDocumento { get; set; }
+        public int TipoDocumentoId { get; set; }
 
         [Required]
         [DefaultValue(true)]
@@ -67,8 +71,11 @@ namespace AplicacionComercial.Common.Entities
         [Display(Name = "Teléfono")]
         public string Telefono { get; set; }
 
+        [Display(Name = "Tipo de Usuario")]
 
-        [Display(Name = "Tipo Documento")]
+        public UserType UserType { get; set; }
+        
+       
         public virtual TipoDocumento IdtipoDocumentoNavigation { get; set; }
     }
 }

@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using AplicacionComercial.Common.Entities;
 using AplicacionComercial.Web.Data;
 using AplicacionComercial.Web.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AplicacionComercial.Web.Controllers
 {
+    [Authorize(Roles = "SuperUser")]
     public class DepartamentosController : Controller
     {
         //private readonly DataContext _context;

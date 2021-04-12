@@ -2,15 +2,18 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AplicacionComercial.Web.Interfaces
 {
-    public interface IProductoRepository:IGenericRepository<Producto>
+    public interface IProductoRepository : IGenericRepository<Producto>
     {
         Task<List<Producto>> GetIndexResult();
         Task<Producto> GetProductoById(int id);
+        Task<Producto> GetProductoDetallesImagenProducto(int id);
         Task<Producto> GetProductoAlmacen(int id);
+        Task<Producto> GetProductoCodBarraAsync(int id);
+        //Task<List<Producto>> GetImagenProductoById(int id);
+
     }
 }

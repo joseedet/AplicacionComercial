@@ -2,10 +2,24 @@
 
 using Microsoft.AspNetCore.Http;
 
+using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace AplicacionComercial.Web.Models
 {
-    public class ImagenProductoViewModel : ImagenProducto
+    public class ImagenProductoViewModel : Producto
     {
-        public IFormFile Image { get; set; } = null;
+
+        public int IdProducto { get; set; }        
+
+        [Display(Name = "Image")]
+        public Guid ImageId { get; set; }
+
+        [Display(Name = "Image")]
+        public new string  ImageFullPath => ImageId == Guid.Empty
+            ? $"https://localhost:44305/images/noimage.png"
+            : $"https://localhost:44305/images/producto";
+
+        
     }
 }

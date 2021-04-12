@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AplicacionComercial.Common.Entities;
 using AplicacionComercial.Web.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AplicacionComercial.Web.Controllers
 {
+    [Authorize(Roles = "SuperUser")]
     public class IvasController : Controller
     {
         private readonly IIvaRepository _iva;

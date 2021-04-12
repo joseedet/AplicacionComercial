@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AplicacionComercial.Common.Entities;
 using AplicacionComercial.Web.Interfaces;
+using AplicacionComercial.Web.Data.Entities;
 
 namespace AplicacionComercial.Web.Controllers
 {

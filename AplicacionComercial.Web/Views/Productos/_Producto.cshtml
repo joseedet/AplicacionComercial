@@ -21,11 +21,6 @@
     <span asp-validation-for="Notas" class="text-danger"></span>
 </div>
 <div class="form-group">
-    <label asp-for="Cantidad" class="control-label"></label>
-    <input asp-for="Cantidad" class="form-control" />
-    <span asp-validation-for="Notas" class="text-danger"></span>
-</div>
-<div class="form-group">
     <label asp-for="Activo" class="control-label"></label>
     <input asp-for="Activo" class="form-check" />
     <span asp-validation-for="Activo" class="text-danger"></span>
@@ -49,7 +44,17 @@
     <select asp-for="Idmedida" class="form-control" asp-items="@ViewBag.Idmedida"></select>
 </div>
 
+@*<div class="form-group">
+        <label asp-for="IsStarred" class="control-label"></label>
+        <input asp-for="IsStarred" class="form-check" />
+        <span asp-validation-for="Activo" class="text-danger"></span>
 
+    </div>*@
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
 
 
 

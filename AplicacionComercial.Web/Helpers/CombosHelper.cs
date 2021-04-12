@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AplicacionComercial.Web.Helper
+namespace AplicacionComercial.Web.Helpers
 {
     public class CombosHelper : ICombosHelper
     {

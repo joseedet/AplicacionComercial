@@ -50,13 +50,12 @@ namespace AplicacionComercial.Web.Repository
         public async Task UpdateAsync(T entity)
         {
             _dataContext.Update(entity);
+            
             await _dataContext.SaveChangesAsync();
         }
         public IQueryable<T> GetAll(int pageNumber)
         {
             int pagesize = 1;
-
-
             return _dataContext.Set<T>().Skip(1).Take(pagesize);
         }
 

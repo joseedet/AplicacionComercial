@@ -1,4 +1,5 @@
 ﻿using AplicacionComercial.Common.Entities;
+using AplicacionComercial.Web.Data.Entities;
 
 using System;
 using System.Collections.Generic;

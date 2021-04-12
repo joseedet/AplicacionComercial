@@ -1,11 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using AplicacionComercial.Web.Data.Entities;
+using AplicacionComercial.Web.Interfaces;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AplicacionComercial.Common.Entities;
-using AplicacionComercial.Web.Interfaces;
+
+using System.Threading.Tasks;
 
 namespace AplicacionComercial.Web
 {
+    [Authorize(Roles = "SuperUser")]
     public class TipoDocumentosController : Controller
     {
         //private readonly DataContext _context;
@@ -30,8 +34,8 @@ namespace AplicacionComercial.Web
             }
 
             var tipoDocumento = await _tipoDocumento.GetByIdAsync((int)id);
-                //_context.TiposDocumentos
-                //.FirstOrDefaultAsync(m => m.Id == id);
+            //_context.TiposDocumentos
+            //.FirstOrDefaultAsync(m => m.Id == id);
             if (tipoDocumento == null)
             {
                 return NotFound();
@@ -99,7 +103,7 @@ namespace AplicacionComercial.Web
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (! await _tipoDocumento.ExistAsync(tipoDocumento.Id))
+                    if (!await _tipoDocumento.ExistAsync(tipoDocumento.Id))
                     {
                         return NotFound();
                     }
@@ -144,6 +148,6 @@ namespace AplicacionComercial.Web
         //    return RedirectToAction("Index");
         //}
 
-        
+
     }
 }

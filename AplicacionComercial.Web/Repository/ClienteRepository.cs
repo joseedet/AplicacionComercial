@@ -1,5 +1,6 @@
 ﻿using AplicacionComercial.Common.Entities;
 using AplicacionComercial.Web.Data;
+using AplicacionComercial.Web.Data.Entities;
 using AplicacionComercial.Web.Interfaces;
 
 namespace AplicacionComercial.Web.Repository

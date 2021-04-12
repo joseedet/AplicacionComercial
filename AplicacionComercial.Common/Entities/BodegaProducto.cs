@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
+using System.ComponentModel.DataAnnotations;
 
 namespace AplicacionComercial.Common.Entities
 {
-    public class BodegaProducto
+    public class BodegaProducto/*:IEntity*/
     {
+        //public int Id { get; set; }
         public int Idbodega { get; set; }
         public int Idproducto { get; set; }
 
@@ -26,7 +28,7 @@ namespace AplicacionComercial.Common.Entities
         [Required]
         public double CantidadMinima { get; set; }
 
-        public virtual Bodega IdbodegaNavigation { get; set; }
-        public virtual Producto IdproductoNavigation { get; set; }
+        public virtual Bodega Bodega { get; set; } 
+        public virtual Producto Producto { get; set; }
     }
 }

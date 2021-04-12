@@ -1,13 +1,15 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using AplicacionComercial.Common.Entities;
+using AplicacionComercial.Web.Interfaces;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AplicacionComercial.Common.Entities;
-using AplicacionComercial.Web.Data;
-using AplicacionComercial.Web.Interfaces;
+
+using System.Threading.Tasks;
 
 namespace AplicacionComercial.Web.Controllers
 {
+    [Authorize(Roles = "SuperUser")]
     public class MedidasController : Controller
     {
         private readonly IMedidaRepository _medida;
@@ -32,8 +34,8 @@ namespace AplicacionComercial.Web.Controllers
             }
 
             var medida = await _medida.GetByIdAsync((int)id);
-                //_context.Medidas
-                //.FirstOrDefaultAsync(m => m.Id == id);
+            //_context.Medidas
+            //.FirstOrDefaultAsync(m => m.Id == id);
             if (medida == null)
             {
                 return NotFound();
@@ -124,8 +126,8 @@ namespace AplicacionComercial.Web.Controllers
             }
 
             var medida = await _medida.GetByIdAsync((int)id);
-                //_context.Medidas
-                //.FirstOrDefaultAsync(m => m.Id == id);
+            //_context.Medidas
+            //.FirstOrDefaultAsync(m => m.Id == id);
             if (medida == null)
             {
                 return NotFound();

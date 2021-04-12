@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Morfeo</title>
+    <title>@ViewData["Title"] - Oscua</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
@@ -22,38 +22,75 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Archivo
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Bodegas" asp-action="Index">Almacén</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Clientes" asp-action="Index">Cliente</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Conceptos" asp-action="Index">Concepto</a></li>
-                                <li class="dropdown-submenu">
-                                    <a class="dropdown-item dropdown-toggle" href="#">Producto</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" asp-area="" asp-controller="Departamentos" asp-action="Index">Departamento</a></li>
-                                        <li><a class="dropdown-item" asp-area="" asp-controller="Ivas" asp-action="Index">IVA</a></li>
-                                        <li><a class="dropdown-item" asp-area="" asp-controller="Productos" asp-action="Index">Producto</a></li>
-                                        <li><a class="dropdown-item" asp-area="" asp-controller="Medidas" asp-action="Index">Medida</a></li>
-                                    </ul>
-                                </li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Proveedores" asp-action="Index">Proveedor</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="TipoDocumentos" asp-action="Index">Tipo Documento</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Movimientos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Articulos" asp-action="Index">Blog</a>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                    </ul>   
-                </div>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("SuperUser"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Archivo
+                                </a>
+
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Bodegas" asp-action="Index">Almacén</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Clientes" asp-action="Index">Cliente</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Conceptos" asp-action="Index">Concepto</a></li>
+                                    <li class="dropdown-submenu">
+                                        <a class="dropdown-item dropdown-toggle" href="#">Producto</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" asp-area="" asp-controller="Departamentos" asp-action="Index">Departamento</a></li>
+                                            <li><a class="dropdown-item" asp-area="" asp-controller="Ivas" asp-action="Index">IVA</a></li>
+                                            <li><a class="dropdown-item" asp-area="" asp-controller="Productos" asp-action="Index">Producto</a></li>
+                                            <li><a class="dropdown-item" asp-area="" asp-controller="Medidas" asp-action="Index">Medida</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Proveedores" asp-action="Index">Proveedor</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="TipoDocumentos" asp-action="Index">Tipo Documento</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Movimientos
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Compras" asp-action="Index">Compras</a></li>
+                                    <li class="dropdown-submenu">
+                                        <a class="dropdown-item dropdown-toggle" href="#">Devoluciones</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" asp-area="" asp-controller="DeClientes" asp-action="Index">De Clientes</a></li>
+                                            <li><a class="dropdown-item" asp-area="" asp-controller="AProveedores" asp-action="Index">A Proveedores</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Traslados" asp-action="Index">Traslados</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Salidas" asp-action="Index">Salidas</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Ventas" asp-action="Index">Ventas</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Articulos" asp-action="Index">Blog</a>
+                            </li>
+                        }
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item align-content-sm-end">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account"
+                                   asp-action="ChangeUser">@User.Identity.Name</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
+                        }
+                        else
+                        {
+                            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+                        }
+                    </ul>                     
+                            
+                        
+                <ul class=" navbar-nav ml-auto" >
+                   
+                </ul>
+                    
+              </div>
             </div>
         </nav>
     </header>

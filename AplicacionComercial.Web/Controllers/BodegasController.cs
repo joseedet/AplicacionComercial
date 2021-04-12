@@ -2,6 +2,7 @@
 using AplicacionComercial.Web.Data;
 using AplicacionComercial.Web.Interfaces;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace AplicacionComercial.Web.Controllers
 {
+    [Authorize(Roles = "SuperUser")]
     public class BodegasController : Controller
     {
         private readonly DataContext _context;

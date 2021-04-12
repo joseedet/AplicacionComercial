@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AplicacionComercial.Common.Entities;
-using AplicacionComercial.Web.Data;
-using AplicacionComercial.Web.Repository;
 using AplicacionComercial.Web.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AplicacionComercial.Web.Controllers
 {
+    [Authorize(Roles = "SuperUser")]
     public class ConceptosController : Controller
     {
         //private readonly DataContext _context;

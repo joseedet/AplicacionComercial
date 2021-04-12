@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AplicacionComercial.Common\AplicacionComercial.Common.csproj" />
+    <ProjectReference Include="..\AplicacionComercial.Web\AplicacionComercial.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="DSAplicacionComercial.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DSAplicacionComercial.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DSAplicacionComercial.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DSAplicacionComercial.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+</Project>

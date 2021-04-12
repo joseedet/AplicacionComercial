@@ -1,33 +1,40 @@
 ﻿using AplicacionComercial.Common.Entities;
-using AplicacionComercial.Web.Data;
+using AplicacionComercial.Interfaces.ProcedimientosAl;
 using AplicacionComercial.Web.Interfaces;
 using AplicacionComercial.Web.Models;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AplicacionComercial.Web.Controllers
 {
+    [Authorize(Roles = "SuperUser")]
     public class ProductosController : Controller
     {
-        private readonly DataContext _context;
+        //private readonly DataContext _context;
         private readonly ICombosHelper _combosHelper;
         private readonly IProductoRepository _producto;
         private readonly IMedidaRepository _medida;
         private readonly IIvaRepository _iva;
         private readonly IDepartamentoRepository _departamento;
         private readonly IConverterHelper _convertHelper;
+        private readonly IBodegaProductoRepository _bodegaproducto;
+        private readonly IImagenProducto _imagentProducto;
+        private readonly IFileManager _fileManager;
+        private readonly IBodega _bodega;
+        private readonly IAlmacenProducto _almacenProducto;
 
 
         public ProductosController(/*DataContext context*/ICombosHelper combosHelper,
-            IProductoRepository productoRepository,IMedidaRepository medidaRepository,
-            IIvaRepository iva,IDepartamentoRepository departamentoRepository,
-            IConverterHelper converterHelper)
+            IProductoRepository productoRepository, IMedidaRepository medidaRepository,
+            IIvaRepository iva, IDepartamentoRepository departamentoRepository,
+            IConverterHelper converterHelper, IBodegaProductoRepository bodegaProductoRepository
+            , IImagenProducto imagenProducto, IFileManager fileManager, IBodega bodega, IAlmacenProducto almacenProducto)
         {
             _combosHelper = combosHelper;
             _producto = productoRepository;
@@ -35,7 +42,11 @@ namespace AplicacionComercial.Web.Controllers
             _iva = iva;
             _departamento = departamentoRepository;
             _convertHelper = converterHelper;
-
+            _bodegaproducto = bodegaProductoRepository;
+            _imagentProducto = imagenProducto;
+            _fileManager = fileManager;
+            _bodega = bodega;
+            _almacenProducto = almacenProducto;
             //_context = context;
 
         }
@@ -45,11 +56,35 @@ namespace AplicacionComercial.Web.Controllers
         {
             //var dataContext = _context.Productos.Include(p => p.IddepartamentoNavigation).Include(p => p.IdivaNavigation).Include(p => p.IdmedidaNavigation);
 
-            
-            var data = await _producto.GetIndexResult();
-            return View(data);
-        }       
 
+            var data = await _producto.GetIndexResult();
+            
+            
+            return View(data);
+        }
+        //TODO:Acabar Vistas esta es un index IEnumerable<ImagenProducto>
+
+
+        public async Task<IActionResult> DetallesImagen(int? id)
+        {
+
+            if (id == null)
+            {
+
+                return NotFound();
+            }
+            Producto producto = await _producto.GetProductoDetallesImagenProducto((int)id);
+
+            if (producto == null)
+            {
+
+                return NotFound();
+            }
+            ImagenProductoViewModel imagen = _convertHelper.ToImagenProductViewModel(producto);
+            //var imagen=await _convertHelper.toi
+
+            return View(imagen);
+        }
         // GET: Productos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -58,7 +93,7 @@ namespace AplicacionComercial.Web.Controllers
                 return NotFound();
             }
 
-             var producto = await _producto.GetProductoAlmacen((int)id);
+            var producto = await _producto.GetProductoAlmacen((int)id);
             if (producto == null)
             {
                 return NotFound();
@@ -75,9 +110,9 @@ namespace AplicacionComercial.Web.Controllers
                 Activo = true
             };
 
-            ViewData["Iddepartamento"] = new SelectList(_departamento.GetAll(),"Id","Descripcion");
-            ViewData["Idiva"] = new SelectList(_iva.GetAll(),"Id","Descripcion");//, "Id", "Descripcion");
-            ViewData["Idmedida"] = new SelectList(_medida.GetAll(),"Id", "Descripcion") ;
+            ViewData["Iddepartamento"] = new SelectList(_departamento.GetAll(), "Id", "Descripcion");
+            ViewData["Idiva"] = new SelectList(_iva.GetAll(), "Id", "Descripcion");//, "Id", "Descripcion");
+            ViewData["Idmedida"] = new SelectList(_medida.GetAll(), "Id", "Descripcion");
             return View();
         }
 
@@ -91,18 +126,26 @@ namespace AplicacionComercial.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                Producto producto = await _convertHelper.ToProductAsync(model, true);
+                Producto producto =  _convertHelper.ToProductAsync(model, true);
+                
+               var img= await _fileManager.SaveImage(model.Image);
+                if (img==string.Empty)
+                {
+                    ViewData["Iddepartamento"] = new SelectList(_departamento.GetAll(), "Id", "Descripcion", model.Iddepartamento);
+                    ViewData["Idiva"] = new SelectList(_iva.GetAll(), "Id", "Descripcion", model.Idiva);
+                    ViewData["Idmedida"] = new SelectList(_medida.GetAll(), "Id", "Descripcion", model.Idmedida);
+                    return View(model);
+                }
+                producto.Imagen = img;
                 await _producto.CreateAsync(producto);
-               
+                
+
                 return RedirectToAction("Index");
             }
-            //ViewData["Iddepartamento"] = new SelectListItem("Id",_combosHelper.GetComboDepartamento.;
-            ViewData["Iddepartamento"] = new SelectList(_departamento.GetAll(),"Id","Descripcion",model.Iddepartamento);
-            //ViewData["Iddepartamento"] = new SelectList(_context.Departamentos, "Id", "Descripcion", producto.Iddepartamento);
-            //ViewData["Idiva"] = _combosHelper.GetComboIva();
-            ViewData["Idiva"] = new SelectList(_iva.GetAll(),"Id","Descripcion",model.Idiva);
-            //ViewData["Idmedida"] = _combosHelper.GetComboMedida();
-            ViewData["Idmedida"] = new SelectList(_medida.GetAll(),"Id","Descripcion",model.Idmedida);//, "Descripcion", producto.Idmedida);
+
+            ViewData["Iddepartamento"] = new SelectList(_departamento.GetAll(), "Id", "Descripcion", model.Iddepartamento);
+            ViewData["Idiva"] = new SelectList(_iva.GetAll(), "Id", "Descripcion", model.Idiva);
+            ViewData["Idmedida"] = new SelectList(_medida.GetAll(), "Id", "Descripcion", model.Idmedida);
             return View(model);
         }
 
@@ -113,8 +156,9 @@ namespace AplicacionComercial.Web.Controllers
             {
                 return NotFound();
             }
-
             var producto = await _producto.GetByIdAsync((int)id);
+            ProductoViewModel productoViewModel = _convertHelper.ToProductViewModel(producto);
+            //var producto = await _producto.GetByIdAsync((int)id);
             if (producto == null)
             {
                 return NotFound();
@@ -122,15 +166,14 @@ namespace AplicacionComercial.Web.Controllers
             ViewData["Iddepartamento"] = new SelectList(_departamento.GetAll(), "Id", "Descripcion", producto.Iddepartamento);
             ViewData["Idiva"] = new SelectList(_iva.GetAll(), "Id", "Descripcion", producto.Idiva);
             ViewData["Idmedida"] = new SelectList(_medida.GetAll(), "Id", "Descripcion", producto.Idmedida);
-            return View(producto);
+            return View(productoViewModel);
+            //return View ("Index");
         }
 
-        // POST: Productos/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //POST 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Descripcion,Nombre,Iddepartamento,Idiva,Precio,Notas,Idmedida,Medida,Activo")] Producto producto)
+        public async Task<IActionResult> Edit(int id, Producto producto)
         {
             if (id != producto.Id)
             {
@@ -141,7 +184,7 @@ namespace AplicacionComercial.Web.Controllers
             {
                 try
                 {
-                    
+
                     await _producto.UpdateAsync(producto);
                 }
                 catch (DbUpdateConcurrencyException)
@@ -155,12 +198,111 @@ namespace AplicacionComercial.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
-            ViewData["Iddepartamento"] = new SelectList(_context.Departamentos, "Id", "Descripcion", producto.Iddepartamento);
-            ViewData["Idiva"] = new SelectList(_context.Ivas, "Id", "Descripcion", producto.Idiva);
-            ViewData["Idmedida"] = new SelectList(_context.Medidas, "Id", "Descripcion", producto.Idmedida);
+            ViewData["Iddepartamento"] = new SelectList(_departamento.GetAll(), "Id", "Descripcion", producto.Iddepartamento);
+            ViewData["Idiva"] = new SelectList(_iva.GetAll(), "Id", "Descripcion", producto.Idiva);
+            ViewData["Idmedida"] = new SelectList(_medida.GetAll(), "Id", "Descripcion", producto.Idmedida);
             return View(producto);
+        }
+        //GET Producto/AddBodegaProducto
+
+        public IActionResult AddBodegaProducto(int id)
+        {
+            //TODO:Cambiar modelo a bodegaproducto
+            ProductoAlmacenViewModel productoAlmacenViewModel = new ProductoAlmacenViewModel
+            {
+                Minimo = 1,
+                Idproducto = id
+
+            };
+
+            ViewData["Idbodega"] = new SelectList(_bodega.GetAll(), "Id", "Descripcion");
+            //ViewData["Idiva"] = new SelectList(_iva.GetAll(), "Id", "Descripcion");//, "Id", "Descripcion");
+            //ViewData["Idmedida"] = new SelectList(_medida.GetAll(), "Id", "Descripcion");
+            return View(productoAlmacenViewModel);
+        }
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddBodegaProducto(ProductoAlmacenViewModel productoAlmacenViewModel)
+        {
+            BodegaProducto bodegaProducto = _convertHelper.ToAlmacenProducto(productoAlmacenViewModel, true);
+
+            if (!ModelState.IsValid)
+            {
+
+                try
+                {
+                    await _bodegaproducto.CreateAsync(bodegaProducto);
+                    //await _almacenProducto.Agregar("",bodegaProducto);
+                    return RedirectToAction("Details", "Productos", new { id = bodegaProducto.Idproducto });
+
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+
+                    if (!await _bodegaproducto.ExistAsync(bodegaProducto.Idbodega, bodegaProducto.Idproducto))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+
+                }
+            }
+            ViewData["Idbodega"] = new SelectList(_bodega.GetAll(), "Id", "Descripcion");
+            return View(productoAlmacenViewModel);
+        }
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddImagenProducto(AddImagenProducto model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                //ImagenProducto imagenProducto = _convertHelper.ToImagenProducto(model);
+               var guid= await _fileManager.SaveImage(model.Image);
+                var imagen = new
+                    AddImagenProducto
+                {
+                    ProductoId = model.ProductoId,
+                    ImageId = guid
+                };
+               ////model.ImageId =guid;
+               await _imagentProducto.CreateAsync(imagen);
+                return View(imagen);
+            }
+            else
+            {
+                return View(model);
+
+            }
+            
+        }
+        //GET
+        [HttpGet]
+        public async Task<IActionResult> AddImagenProducto(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var producto = await _producto.GetByIdAsync((int)id);
+
+            var imagen = new
+                AddImagenProducto
+            {
+                ProductoId = producto.Id,
+                 
+
+            };
+            //AddImagenProducto imagenProducto =(AddImagenProducto) _convertHelper.ToImagenProducto(producto);
+            //ImagenProductoViewModel imagenProduct = _convertHelper.ToImagenProductViewModel(producto);
+            return View(imagen);
         }
 
         public async Task<IActionResult> Delete(int? id)
@@ -180,6 +322,25 @@ namespace AplicacionComercial.Web.Controllers
             //return View(departamento);
         }
 
+
+        public async Task<IActionResult> ImagenDelete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            //var ids=(int)id;
+
+            ImagenProducto imagenProducto = await _imagentProducto.GetByIdAsync((int)id);
+
+            if (imagenProducto == null)
+            {
+                return NotFound();
+
+            }
+            await _imagentProducto.DeleteAsync(imagenProducto);
+            return RedirectToAction("Index");
+        }
 
     }
 }
